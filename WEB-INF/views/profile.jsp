@@ -105,11 +105,183 @@
         cursor: pointer;
     }
 </style>
+ <style>
+    /* CSS styles for the dashboard */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f1f1f1;
+    }
+    .sidebar {
+      background-color: #333;
+      color: #fff;
+      width: 200px;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .sidebar ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+    .sidebar li {
+      margin-bottom: 10px;
+    }
+    .sidebar li a {
+      color: #fff;
+      text-decoration: none;
+      display: block;
+      padding: 10px;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+    .sidebar li a:hover {
+      background-color: #555;
+    }
+    .user-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .user-info img {
+      width: 130px; /* Adjust the width as per your preference */
+      height: 130px; /* Adjust the height as per your preference */
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+    .user-info span {
+      font-weight: bold;
+      font-size: 18px;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    .logout-link {
+      margin-top: auto;
+      display: block;
+    }
+    .content {
+      margin-left: 250px; /* Adjust this value to accommodate the sidebar width */
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    h2 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    p {
+      margin-bottom: 10px;
+    }
+    
+    .user-details p {
+      margin-bottom: 5px;
+    }
+    .user-details.show {
+      display: block;
+    }
+    .user-details {
+  display: none;
+  margin: 20px auto; /* Added margin:auto for center alignment */
+  max-width: 400px; /* Added max-width for responsive layout */
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  
+}
+    
+    .dashboard {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .dashboard p {
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 5px;
+      background-color: #f5f5f5;
+      margin: 0;
+      flex-basis: 50%;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <!-- Display the customer name -->
-        <h1>Hey! ${cust != null ? cust.custName : ""}</h1>
+     <div class="sidebar">
+         <div class="user-info">
+              <img src="https://tse4.mm.bing.net/th?id=OIP.CUmXK7A3sWtCO2KP_yPztgAAAA&pid=Api&P=0&h=180" alt="User Icon">
+               <h1>Hey! ${cust != null ? cust.custName : ""}</h1>
+         </div>
+         <ul>                
+                <li><a href="#">&#128142; Orders</a></li>
+                <li><a href="#">&#128722; Cart</a></li>
+                <li><a href="#">&#10084; WishList</a></li>
+                <li><a href="logout">LogOut</a></li>
+                <li><a href="loggedIn">Home</a></li>
+            </ul>
+     </div>
+     <div class="content" id="content"> 
+       <div style="display: flex; justify-content: space-between; align-items: center;">
+             <h1>Welcome to the the store</h1>
+       </div>
+         <div id="edit">
+            <h1>Customer Profile</h1>
+            <table>
+                <tr>
+                    <th>Customer ID</th>
+                    <td>${cust != null ? cust.custId : ""}</td>
+                </tr>
+                <tr>
+                    <th>Name</th>
+                    <td>${cust != null ? cust.custName : ""}</td>
+                </tr>
+                <tr>
+                    <th>Mobile</th>
+                    <td>${cust != null ? cust.custMobile : ""}</td>
+                </tr>
+                <tr>
+                
+                    <th>Location</th>
+                    <td>${cust != null ? cust.custLocation : ""}</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>${cust != null ? cust.custEmail : ""}</td>
+                </tr>
+                <tr>
+                    <th>Address</th>
+                    <td>${cust != null ? cust.custAddress : ""}</td>
+                </tr>
+                <tr>
+                    <th>Shipping Address</th>
+                    <td>${cust != null ? cust.custSAddress : ""}</td>
+                </tr>
+                <tr>
+                    <th>Pincode</th>
+                    <td>${cust != null ? cust.custPincode : ""}</td>
+                </tr>
+                <tr>
+                    <th>Last Login Date</th>
+                    <td>${cust != null ? cust.custLastLoginDate : ""}</td>
+                </tr>
+            </table> 
+            <button onclick="editprofile()">EDIT-PROFILE</button> 
+        </div>
+  </div>
+  
+        <%-- <h1>Hey! ${cust != null ? cust.custName : ""}</h1>
         <nav>
             <ul>
                 <li><a href="loggedIn">Home</a></li>
@@ -120,7 +292,6 @@
                 <li><a href="logout">LogOut</a></li>
             </ul>
         </nav>
-    </header>
     <main>
          <div id="edit">
             <h1>Customer Profile</h1>
@@ -162,10 +333,10 @@
                     <th>Last Login Date</th>
                     <td>${cust != null ? cust.custLastLoginDate : ""}</td>
                 </tr>
-            </table>
-            <button onclick="editprofile()">EDIT-PROFILE</button>
+            </table> 
+            <button onclick="editprofile()">EDIT-PROFILE</button> 
         </div>
-    </main>
+    </main> --%>
     <script>
 function editprofile() {
     var ele = document.getElementById("edit");
