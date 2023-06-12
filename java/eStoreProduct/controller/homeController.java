@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import eStoreProduct.DAO.cartDAO;
 import eStoreProduct.DAO.customerDAO;
 import eStoreProduct.model.custCredModel;
 import eStoreProduct.model.emailSend;
@@ -23,12 +24,12 @@ public class homeController {
 	private String generateotp = "";
 	private String finalemail;
 	customerDAO cdao;
-	//cartDAO cartdao1;
+	cartDAO cartdao1;
 
 	@Autowired
-	public homeController(customerDAO customerdao/* , cartDAO cartdao */) {
+	public homeController(customerDAO customerdao, cartDAO cartdao) {
 		cdao = customerdao;
-		//cartdao1 = cartdao;
+		cartdao1 = cartdao;
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
@@ -101,11 +102,11 @@ public class homeController {
 	 * 
 	 * // // call the view return "forgotPage"; }
 	 */
+
 	// On clicking my profile should display profile.jsp
 
 	@RequestMapping(value = "/profilePage")
 	public String sendProfilePage(Model model, HttpSession session) {
-		System.out.println("recieved object in profile is "+session.getAttribute("customer"));
 		custCredModel cust = (custCredModel) session.getAttribute("customer");
 		System.out.println(cust.getCustId());
 		model.addAttribute("cust", cust);
@@ -115,7 +116,6 @@ public class homeController {
 	// on clicking update Profile in profile page
 	@RequestMapping(value = "/updateProfile", method = RequestMethod.POST)
 	public String userupdate(@ModelAttribute("Customer") custCredModel cust, Model model, HttpSession session) {
-		System.out.println("üpdate profile");
 		cdao.updatecustomer(cust);
 		custCredModel custt = cdao.getCustomerById(cust.getCustId());
 		System.out.print(custt.getCustLocation());
@@ -155,7 +155,9 @@ public class homeController {
 	 * finalemail = email; generateotp = (new emailSend()).sendEmail(email);
 	 * 
 	 * return generateotp; // Return the generated OTP as the response }
-	 * 
+	 */
+
+	/*
 	 * @PostMapping("/validateOTP")
 	 * 
 	 * @ResponseBody public String validateOTP(@RequestParam("otp12") String otp) {
