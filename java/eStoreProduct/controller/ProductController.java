@@ -1,81 +1,86 @@
-/*
- * package eStoreProduct.controller;
- * 
- * import java.util.List;
- * 
- * import org.springframework.beans.factory.annotation.Autowired; import
- * org.springframework.context.annotation.ComponentScan; import
- * org.springframework.stereotype.Controller; import
- * org.springframework.ui.Model; import
- * org.springframework.web.bind.annotation.GetMapping; import
- * org.springframework.web.bind.annotation.RequestParam; import
- * org.springframework.web.bind.annotation.ResponseBody;
- * 
- * import eStoreProduct.DAO.CategoryDAO; import
- * eStoreProduct.ProductsService.CategoryService; import
- * eStoreProduct.ProductsService.ProductService; import
- * eStoreProduct.model.Product;
- * 
- * @Controller
- * 
- * @ComponentScan(basePackages = "eStoreProduct") public class ProductController
- * {
- * 
- * private final ProductService productService; private final CategoryService
- * categoryService;
- * 
- * @Autowired public ProductController(ProductService productService,
- * CategoryService categoryService) { this.productService = productService;
- * CategoryDAO categoryDAO = new CategoryDAO(); // Instantiate the CategoryDAO
- * class this.categoryService = new CategoryService(categoryDAO); // Pass
- * CategoryDAO to CategoryService constructor }
- * 
- * @GetMapping("/CategoriesServlet")
- * 
- * @ResponseBody public String displayCategories(Model model) { List<String>
- * categories = categoryService.getAllCategories();
- * 
- * StringBuilder htmlContent = new StringBuilder();
- * htmlContent.append("<option disabled selected>Products</option>"); for
- * (String category : categories) {
- * htmlContent.append("<option value='").append(category).append("'>").append(
- * category).append("</option>"); }
- * 
- * return htmlContent.toString(); }
- * 
- * @GetMapping("/products")
- * 
- * @ResponseBody public String showProducts(@RequestParam(value = "category",
- * required = false) String category, Model model) { List<Product> products;
- * System.out.println("hiii"); if (category != null && !category.isEmpty()) {
- * System.out.println("hiii"); products =
- * productService.getProductsByCategory(category); } else { products =
- * productService.getAllProducts(); }
- * 
- * String htmlContent = generateProductCatalogHTML(products);
- * 
- * return htmlContent; }
- * 
- * private String generateProductCatalogHTML(List<Product> products) {
- * StringBuilder htmlContent = new StringBuilder();
- * htmlContent.append("<div class=\"container mt-5\">\n").
- * append("<h2>Product Catalog</h2>\n") .append("<div class=\"row mt-4\">\n");
- * 
- * for (Product product : products) {
- * htmlContent.append("<div class=\"col-lg-4 col-md-6 mb-4\">\n").
- * append("<div class=\"card h-100\">\n")
- * .append("<img class=\"card-img-top\" src=\"").append(product.getImageUrl()).
- * append("\" alt=\"") .append(product.getName()).append("\">\n").
- * append("<div class=\"card-body\">\n")
- * .append("<h5 class=\"card-title\">").append(product.getName()).append(
- * "</h5>\n")
- * .append("<p class=\"card-text\">").append(product.getDescription()).append(
- * "</p>\n")
- * .append("<p class=\"card-text\">").append(product.getPrice()).append(
- * "</p>\n") .append("<button class=\"btn btn-primary\">Add to Cart</button>\n")
- * .append("<button class=\"btn btn-secondary\">Add to Wishlist</button>\n").
- * append("</div>\n") .append("</div>\n").append("</div>\n"); }
- * 
- * htmlContent.append("</div>\n").append("</div>\n"); return
- * htmlContent.toString(); } }
- */
+
+  package eStoreProduct.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import eStoreProduct.model.Product;
+import eStoreProduct.DAO.ProductDAO;
+@Controller
+//@ComponentScan(basePackages = "Products")
+public class ProductController {
+
+	private final ProductDAO pdaoimp;
+	
+	@Autowired
+	public ProductController(ProductDAO productdao)
+	{
+	    pdaoimp=productdao;
+	}
+
+	@GetMapping("/CategoriesServlet")
+	@ResponseBody
+	public String displayCategories(Model model) {
+		List<String> categories = pdaoimp.getAllCategories();
+		StringBuilder htmlContent = new StringBuilder();
+		htmlContent.append("<option disabled selected>select Product category</option>");
+		for (String category : categories) {
+			htmlContent.append("<option value='").append(category).append("'>").append(category).append("</option>");
+		}
+
+		return htmlContent.toString();
+	}
+
+	@GetMapping("/products")
+	//@ResponseBody
+	public String showCategoryProducts(@RequestParam(value = "category", required = false) String category, Model model) {
+		System.out.println("based on category method");
+		List<Product> products;
+		if (category != null && !category.isEmpty()) {
+			products = pdaoimp.getProductsByCategory(category);
+		} else {
+			products = pdaoimp.getAllProducts();
+		}
+		model.addAttribute("products", products);
+		//String htmlContent = generateProductCatalogHTML(products);
+
+		return "productCatalog";
+	}
+	
+	
+	@GetMapping("/productsDisplay")
+	public String showAllProducts(Model model) {
+	    //System.out.println("all prod display method mapping");
+	    List<Product> products = pdaoimp.getAllProducts();
+
+	    model.addAttribute("products", products);
+
+	    return "productCatalog";
+	}	
+	@RequestMapping(value = "/prodDescription", method = RequestMethod.GET)
+	public String getSignUpPage(Model model) {
+		System.out.println("product description Page");
+
+		// call the view
+		return "prodDescription";
+	}
+	//prodDescription
+	
+	@GetMapping("/products/{productId}")
+	public String showProductDetails(@PathVariable int productId, Model model) {
+
+		Product product = pdaoimp.getProductById(productId);
+		model.addAttribute("product", product);
+		return "productDetails";
+	}
+	
+}

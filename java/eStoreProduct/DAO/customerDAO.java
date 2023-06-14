@@ -7,7 +7,7 @@ public interface customerDAO {
 
 	// custCredModel checkCustomer(String usr, String pswd);
 
-	public custCredModel updatelastlogin(int cid);
+	public void updatelastlogin(int cid);
 
 	public void updatecustomer(custCredModel ccm);
 

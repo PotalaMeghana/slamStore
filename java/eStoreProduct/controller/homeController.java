@@ -7,22 +7,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import eStoreProduct.DAO.cartDAO;
 import eStoreProduct.DAO.customerDAO;
 import eStoreProduct.model.custCredModel;
-import eStoreProduct.model.emailSend;
 
 @Controller
 public class homeController {
 	static boolean flag = false;
-	private String generateotp = "";
-	private String finalemail;
 	customerDAO cdao;
 	cartDAO cartdao1;
 
@@ -34,6 +28,15 @@ public class homeController {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String getHome(Model model) {
+		System.out.println("Home Page");
+		model.addAttribute("fl", flag);
+
+		// call the view
+		return "home";
+	}
+	
+	@RequestMapping(value = "/home", method = RequestMethod.GET)
+	public String getHomePage(Model model) {
 		System.out.println("Home Page");
 		model.addAttribute("fl", flag);
 

@@ -16,10 +16,10 @@ public class customerMapper implements RowMapper<custCredModel> {
 		cust.setCustMobile(rs.getString("cust_mobile"));
 		cust.setCustLocation(rs.getString("cust_location"));
 		cust.setCustAddress(rs.getString("cust_address"));
-		cust.setCustSAddress(rs.getString("cust_saddress"));
 		cust.setCustPincode(rs.getString("cust_pincode"));
-		cust.setCustLastLoginDate(rs.getTimestamp("cust_lastlogindate"));
+		cust.setCustSAddress(rs.getString("cust_saddress"));
 		cust.setCustSpincode(rs.getString("cust_spincode"));
+		cust.setCustLastLoginDate(rs.getTimestamp("cust_lastlogindate"));
 		return cust;
 	}
 }

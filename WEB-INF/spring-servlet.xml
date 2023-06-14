@@ -26,9 +26,9 @@
     </bean>
   <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 	    <property name="driverClassName" value="org.postgresql.Driver" />
-	    <property name="url" value="jdbc:postgresql://LocalHost:5432/postgres" />
-	    <property name="username" value="postgres" />
-	    <property name="password" value="2468" />
+	     <property name="url" value="jdbc:postgresql://192.168.110.48:5432/plf_training" />
+	    <property name="username" value="plf_training_admin" />
+	    <property name="password" value="pff123" />
 	</bean>
 
 	 <bean id="entityManagerFactory" 
@@ -53,18 +53,17 @@
 
 	<!-- byName example -->
     <bean id="customerdao" class="eStoreProduct.DAO.customerDAOImp" autowire="byName"/> 
-<!--     
+    <bean id="productdao" class="eStoreProduct.DAO.ProductDAOImp" autowire="byName"/> 
+    
+        <!-- byName example -->
+    <!-- 
     
     
-    byName example
-    <bean id="cartdao" class="eStoreProduct.DAO.cartDAOImp" autowire="byName"/> 
     
     
-    Configure the ProductDAO bean
+      Configure the ProductDAO bean
     <bean id="productDAO" class="eStoreProduct.DAO.ProductDAO" />
     <bean id="catDAO" class="eStoreProduct.DAO.CategoryDAO" />
-    
-    
 
     Configure the ProductService bean
     <bean id="productService" class="eStoreProduct.ProductsService.ProductService">
@@ -73,5 +72,7 @@
     <bean id="catService" class="eStoreProduct.ProductsService.CategoryService">
         <constructor-arg ref="catDAO" />
     </bean> -->
+    
+    
     
 </beans>

@@ -11,23 +11,24 @@ import org.springframework.stereotype.Component;
 
 import  eStoreProduct.model.*;
 @Component
-public class cartDAOImp implements cartDAO  {
+public class WishlistDAOImp implements WishlistDAO{
+
 	private static final String JDBC_DRIVER = "org.postgresql.Driver";
 	private static final String DB_URL = "jdbc:postgresql://192.168.110.48:5432/plf_training";
 	private static final String USERNAME = "plf_training_admin";
 	private static final String PASSWORD = "pff123";
 
-	public int addToCart(int productId, int customerId) {
+	public int addToWishlist(int productId, int customerId) {
 		try {
-			System.out.println("entered dao add to cart");
+			System.out.println("entered dao add to wishlist");
 			Connection connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
-			String query = "INSERT INTO slam_cart (c_id,p_id) VALUES (?, ?)";
+			String query = "INSERT INTO slam_wishlist (c_id,p_id) VALUES (?, ?)";
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setInt(1, customerId);
 			statement.setInt(2, productId);
 			int r = statement.executeUpdate();
 			if (r > 0) {
-				System.out.println("inserted into cart");
+				System.out.println("inserted into wishlist");
 				return productId;
 			}
 		} catch (SQLException e) {
@@ -37,16 +38,16 @@ public class cartDAOImp implements cartDAO  {
 		return -1;
 	}
 	
-	public int removeFromCart(int productId, int customerId) {
+	public int removeFromWishlist(int productId, int customerId) {
 		try {
 			Connection connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
-			String query = "DELETE FROM SLAM_CART WHERE c_id=? AND p_id=?";
+			String query = "DELETE FROM slam_wishlist WHERE c_id=? AND p_id=?";
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setInt(1, customerId);
 			statement.setInt(2, productId);
 			int r = statement.executeUpdate();
 			if (r > 0) {
-				System.out.println("deleted from  cart");
+				System.out.println("deleted from wishlist");
 				return productId;
 			}
 		} catch (SQLException e) {
@@ -56,14 +57,14 @@ public class cartDAOImp implements cartDAO  {
 		return -1;
 	}
 	
-	public List<Product> getCartProds(int cust_id) {
+	public List<Product> getWishlistProds(int cust_id) {
 		ArrayList<Product> products = new ArrayList<Product>();
 		System.out.println(cust_id + " from model");
 		try {
 			Class.forName(JDBC_DRIVER);
 			Connection connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
 			//System.out.println(cust_id + " from model");
-			String query = "select pd.* from productsdata pd ,slam_cart sc where sc.c_id=? and sc.p_id=pd.id";
+			String query = "select pd.* from productsdata pd ,slam_wishlist sc where sc.c_id=? and sc.p_id=pd.id";
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setInt(1, cust_id);
 			ResultSet resultSet = statement.executeQuery();
@@ -88,5 +89,4 @@ public class cartDAOImp implements cartDAO  {
 
 		return products;
 	}
-	
 }

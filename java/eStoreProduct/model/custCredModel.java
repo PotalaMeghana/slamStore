@@ -16,27 +16,19 @@ public class custCredModel {
 	private String custLocation;
 	private String custEmail;
 	private String custAddress;
-	private String custPincode;
 	private String custSAddress;
-	private String custSpincode;
-	public String getCustSpincode() {
-		return custSpincode;
-	}
-
-	public void setCustSpincode(String custSpincode) {
-		this.custSpincode = custSpincode;
-	}
-
+	private String custPincode;
 	private String custStatus = "A";
 	private Timestamp custLastLoginDate = Timestamp.from(Instant.now());
 	private String custPassword;
+	private String custSpincode;
 
 	public custCredModel() {
 
 	}
 
-	public custCredModel(String custName, String custMobile, String custLocation, String custEmail, String custAddress,
-			String custSAddress, String custPincode, Timestamp custLastLoginDate, String custPassword) {
+	public custCredModel(String custName, String custMobile, String custLocation, String custEmail, String custAddress,String custPincode,
+			String custSAddress,String custSpincode , Timestamp custLastLoginDate, String custPassword) {
 		this.custName = custName;
 		this.custMobile = custMobile;
 		this.custRegDate = Timestamp.from(Instant.now());
@@ -48,15 +40,26 @@ public class custCredModel {
 		this.custStatus = "A";
 		this.custLastLoginDate = custLastLoginDate;
 		this.custPassword = custPassword;
+		this.custSpincode=custSpincode;
 	}
 
 	// Getters and Setters
+
+	public String getCustSpincode() {
+		return custSpincode;
+	}
+
+	public void setCustSpincode(String custSpincode) {
+		System.out.println("spincode   "+custSpincode);
+		this.custSpincode = custSpincode;
+	}
 
 	public int getCustId() {
 		return custId;
 	}
 
 	public void setCustId(int custId) {
+		System.out.println("id   "+custId);
 		this.custId = custId;
 	}
 
